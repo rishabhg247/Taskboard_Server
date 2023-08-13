@@ -4,6 +4,11 @@ app.use(express.json());
 const { Lists, Users } = require('../database/mongooseInit');
 const router = express.Router();
 
+// api to get data of current user..
+router.post('/api/data', async(req, res) => { 
+  let result=await Lists.findOne(req.body);
+  res.json(result.lists);
+})
 //post api..
 router.post('/api/lists', async (req, res) => {
   try {
@@ -32,6 +37,7 @@ router.delete('/api/delete', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+//api to register new user
 router.post("/api/register", async (req, res) => {
   try {
     let { username, email, password } = req.body;
@@ -49,6 +55,7 @@ router.post("/api/register", async (req, res) => {
     return res.status(500).json(error);
   }
 });
+// api for authenticate on login
 router.post("/api/login", async (req, res) => {
   try {
     let { username, password } = req.body;
